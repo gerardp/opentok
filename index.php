@@ -397,6 +397,26 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			}
 			</script>
 
+<script>
+	setInterval(function () {
+		var y = "yes";
+	       $.ajax({
+			type: "POST",
+			url: "includes/check.php",
+			data:({join: y}),
+			success: function(data) {
+				$.getJSON('json/obj.json', function(e) {
+					//	var event_info = [];
+					//	for(var i=0;i<e.length; i++){
+						//		event_info.push(e[i].day);
+						//	}
+
+				});
+			}
+		});
+	    },1000);
+
+</script>
 		</body>
 
 		</html>
