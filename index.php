@@ -51,6 +51,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 	var participants = 0;
 	var watchers = 0;
+	var ismember = 1;;
 
 	var learn = false; // Set to true if you want detailed event listener alerting
 
@@ -120,8 +121,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			session.subscribe(stream, stubDiv.id, {width: SUBSCRIBER_WIDTH, height: SUBSCRIBER_HEIGHT});
 			participants++;
 		}
-		
-		
+
+
 	}
 
 	// Called to unsubscribe from an existing stream
@@ -226,30 +227,31 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			dumpStreams(event.streams, "");
 		}
 
-		
-		
+
+
 		// Display streams on screen, except for this page's own stream.
 
 		for (var i = 0; i < event.streams.length; i++) {
-			
 
-			
+
+
 			if (event.streams[i].connection.connectionId != event.target.connection.connectionId) {
 				subscribeToStream(event.target, event.streams[i]);
 				watchers--;
 			} else {
 				// Our publisher just started streaming
-				
-				
-				
+
+
+
 				//alert(event.streams.toSource())
 				//alert(event.streams[0].streamId);
 				//alert(event.streams[0].connection.connectionId);
-				
+
 				// AJAX
 				var sid =  event.streams[0].streamId;
 				var cid = event.streams[0].connection.connectionId;
-				
+				ismember = sid;
+				alert("porra ta aqui" + ismember);
 				$.ajax({
 					type: "POST",
 					url: "includes/form.php",
@@ -257,8 +259,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 					success: function() {
 					}
 				});
-	
-	
+
+
 				// Update status, controls and counts
 				document.getElementById("status").innerHTML = "You are participating in the call";
 				document.getElementById("action").innerHTML = '<a href="#" onclick="stopPublishing()">Leave call</a>';
@@ -320,26 +322,26 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		});
 		function vai(param,id){
 			$("#streams").append('<div class="users">'+										
-				'<object width="150" height="150" type="application/x-shockwave-flash" id="publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_publishwidget.swf?partnerId=11409442">'+
-					'<param name="allowscriptaccess" value="always">'+
-					'<param name="cameraSelected" value="false">'+
-					'<param name="wmode" value="transparent">'+
-					'<param name="flashvars" value="width=420&height=265&publisherId=publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1&connectionId=c90a0f85be955d187000d6b39a8b27113c1ec8f0&sessionId=1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4&token=T1==cGFydG5lcl9pZD0xMTQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-				'</object>'+
+			'<object width="150" height="150" type="application/x-shockwave-flash" id="publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_publishwidget.swf?partnerId=11409442">'+
+			'<param name="allowscriptaccess" value="always">'+
+			'<param name="cameraSelected" value="false">'+
+			'<param name="wmode" value="transparent">'+
+			'<param name="flashvars" value="width=420&height=265&publisherId=publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1&connectionId=c90a0f85be955d187000d6b39a8b27113c1ec8f0&sessionId=1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4&token=T1==cGFydG5lcl9pZD0xMTQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+			'</object>'+
 			'</div>');
 		}
 	}
 
- /*$(document).ready(function(){
-		$("#streams").append('<div class="users">'+										
-			'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-				'<param name="allowscriptaccess" value="always">'+
-				'<param name="cameraSelected" value="false">'+
-				'<param name="wmode" value="transparent">'+
-				'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-			'</object>'+
-		'</div>');
-})*/
+	/*$(document).ready(function(){
+	$("#streams").append('<div class="users">'+										
+	'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+	'<param name="allowscriptaccess" value="always">'+
+	'<param name="cameraSelected" value="false">'+
+	'<param name="wmode" value="transparent">'+
+	'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+	'</object>'+
+	'</div>');
+	})*/
 
 
 	</script>
@@ -359,6 +361,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		<div id="localview">
 			<div id="myCamera" class="publisherContainer"></div>
 		</div>
+		<div id="streams"></div>
 		<a href="#" onclick="lala()">asdasdasd</a>
 		<div id="streams">
 
@@ -372,10 +375,11 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			<script type="text/javascript">
 			// Set debugging level if wanted
 			// TB.setLogLevel(TB.DEBUG);
-
+			var welcome = false;
 			if (TB.checkSystemRequirements() != TB.HAS_REQUIREMENTS) {
 				alert("Unable to run TokBox OpenTok in this browser.");
 			} else {
+
 				// Register the exception handler and
 				// create the local session object
 				TB.addEventListener("exception", exceptionHandler);
@@ -397,26 +401,52 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			}
 			</script>
 
-<script>
-	setInterval(function () {
-		var y = "yes";
-	       $.ajax({
-			type: "POST",
-			url: "includes/check.php",
-			data:({join: y}),
-			success: function(data) {
-				$.getJSON('json/obj.json', function(e) {
-					//	var event_info = [];
-					//	for(var i=0;i<e.length; i++){
-						//		event_info.push(e[i].day);
-						//	}
+			<script>
 
+
+			var refreshId = setInterval(check, 4000);
+
+			function check() {
+				var y = "yes";
+				$.ajax({
+					type: "POST",
+					url: "includes/check.php",
+					data:({join: y}),
+					success: function(data) {
+						porra()
+					}
 				});
 			}
-		});
-	    },1000);
+			var list = new Array();
+			function porra(){
+				alert("member id(sid):" +ismember);
+				$.getJSON('json/obj.json', function(e) {
 
-</script>
+					$.each(e, function(i, item) {
+						alert(item.streamId)
+
+						if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
+							if(e != e.length){
+								$("#streams").append('<div class="users">'+										
+								'<object width="150" height="150" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+								'<param name="allowscriptaccess" value="always">'+
+								'<param name="cameraSelected" value="false">'+
+								'<param name="wmode" value="transparent">'+
+								'<param name="flashvars" value="'+item.flashvars+'">'+
+								'</object>'+
+								'</div>');	
+								list.push(item.objid,item.flashvars);
+							}
+						}
+
+					});
+				});
+			}
+
+			</script>
 		</body>
 
 		</html>
+
+
+

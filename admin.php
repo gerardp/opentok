@@ -121,6 +121,18 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	function streamDestroyedHandler(event) {
 
 		for (var i = 0; i < event.streams.length; i++) {
+			
+			var sid =  event.streams[0].streamId;
+			var cid = event.streams[0].connection.connectionId;
+
+			$.ajax({
+				type: "POST",
+				url: "includes/removeguest.php",
+				data:({streamId: sid}),
+				success: function() {
+				}
+			});
+			
 			removeStream(event.streams[i].streamId);
 			if (event.streams[i].connection.connectionId == session.connection.connectionId &&
 				event.reason == "forceUnpublished") {
@@ -322,11 +334,11 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		$.ajax({
 			type: "POST",
 			url: "includes/vars.php",
-			data:({objid: oid, flashvars: flashvars, streamid2: parobj}),
+			data:({objid: oid, flashvars: flashvars, streamid: parobj[1]}),
 			success: function() {
-				alert("yes")
 			}
 		});	
+		
 		
 		
 		return false;

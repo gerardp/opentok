@@ -4,13 +4,11 @@ $con = mysql_connect("localhost","root","root");
 $datab = mysql_select_db("topfloor");
 
 
-$objid = $_POST['objid'];
-$flashvars = $_POST['flashvars'];
-$streamid2 = $_POST['streamid2'];
+ $objid = $_POST['objid'];
+ $flashvars = mysql_real_escape_string($_POST['flashvars']);
+ $streamid = $_POST['streamid'];
 
 
-//$ca = 'UPDATE user SET objid="'.$objid.'" WHERE streamId ="'.$_POST['streamid2'].'"' or die(mysql_error());  
-
-$ca = mysql_query('UPDATE user SET flashvars="'.$flashvars.'"') or die(mysql_error());  
+mysql_query('INSERT INTO flashv(streamId, objid, flashvars) VALUES ("'.$_POST['streamid'].'","'.$_POST['objid'].'","'.$_POST['flashvars'].'")');
 
 ?>
