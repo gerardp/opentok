@@ -124,13 +124,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 		document.getElementById("status").innerHTML = "Trying to join the call...";
 		document.getElementById("action").innerHTML = "&nbsp;";
-		$.ajax({
-			type: "POST",
-			url: "includes/form.php",
-			data:({streamId: sid, connectionId: cid,}),
-			success: function() {
-			}
-		});
+
 	}
 
 	// Called when user wants to stop participating in the call
@@ -212,7 +206,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 		// Now possible to join a call - update status and controls
 		//document.getElementById("status").innerHTML = "You are watching the call";
-		document.getElementById("action").innerHTML = '<a href="#" id="streamlg"><div id="streambtn"><p>Start Streaming</p></div></a>';
+		document.getElementById("action").innerHTML = '<a href="#" id="streamlg" onclick="startPublishing()"><div class="streambtn"><p>Start Streaming</p></div></a>';
 
 		// Display any existing streams on screen
 		for (var i = 0; i < event.streams.length; i++) {
@@ -273,7 +267,18 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			dumpStreams(event.streams, "");
 		}
 
-
+		// AJAX
+		var sid =  event.streams[0].streamId;
+		var cid = event.streams[0].connection.connectionId;
+		ismember = sid;
+		
+		$.ajax({
+			type: "POST",
+			url: "includes/form.php",
+			data:({streamId: sid, connectionId: cid,}),
+			success: function() {
+			}
+		});
 
 		// Display streams on screen, except for this page's own stream.
 
@@ -293,16 +298,12 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 				//alert(event.streams[0].streamId);
 				//alert(event.streams[0].connection.connectionId);
 
-				// AJAX
-				var sid =  event.streams[0].streamId;
-				var cid = event.streams[0].connection.connectionId;
-				ismember = sid;
 
 
 
 				// Update status, controls and counts
 				document.getElementById("status").innerHTML = "You are participating in the call";
-				document.getElementById("action").innerHTML = '<a href="#" onclick="stopPublishing()">Leave call</a>';
+				document.getElementById("action").innerHTML = '<a href="#" onclick="stopPublishing()"><div id="leavecall"><p style="margin:9px 38px;font-size:13px">Leave call</p></div></a>';
 
 				participants++;
 				watchers--;
@@ -333,7 +334,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 				// Update status, controls and counts
 				document.getElementById("status").innerHTML = "You are watching the call";
-				document.getElementById("action").innerHTML = '<a href="#" onclick="startPublishing()">Join call</a>';
+				document.getElementById("action").innerHTML = '<a href="#" onclick="startPublishing()"><div class="streambtn"><p style="margin:9px 40px">Join call</p></div></a>';
 
 				participants--;
 				watchers++;
@@ -371,6 +372,17 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		}
 	}
 
+/*$(document).ready(function(){
+$("#streams").append('<div class="users">'+										
+'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+'<param name="allowscriptaccess" value="always">'+
+'<param name="cameraSelected" value="false">'+
+'<param name="wmode" value="transparent">'+
+'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+'</object>'+
+'</div>');
+})*/
+
 
 </script>
 
@@ -384,10 +396,9 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
-				<div id="status">You are connecting to the call</div>
+				<div id="status" style='font:18px Arial,"Bitstream Vera Sans",sans-serif;'>You are connecting to the call</div>
 				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
-				<div id="count-header">Not yet connected</div>
-				<div id="watchers">&nbsp;</div>			</div>
+			</div>
 		</div>
 		<div id="localview">
 			<div id="myCamera" class="publisherContainer"></div>
@@ -431,15 +442,14 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			</script>
 
 			<script>
+
+
+			var refreshId = setInterval(check, 7000);
+			
+			$("#streamlg").animate({opacity:1},1000)
 			
 
-			var refreshId = setInterval(check, 900);
-
 			function check() {
-				
-			//	$("#streamlg").animate({opacity:1},1000)
-				
-				
 				var y = "yes";
 				$.ajax({
 					type: "POST",
@@ -516,7 +526,6 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 				arr = []
 			}
 
-			
 			</script>
 		</body>
 

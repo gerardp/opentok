@@ -61,16 +61,18 @@ li{
 }
 li a{text-decoration:none;color:#fff;}
 li a:hover{text-decoration:underline;color:#444;}
-
+a{text-decoration:none;}
 #streams{clear:both;float:right;margin:50px 0;}
 .users{width:150px;height:150px;background:#000;}
-#streamlg{opacity:0;margin:;}
-#streambtn{margin:-5px 7px;float:left;width:140px;height:auto;background:#f660e7;padding:0 33px;border:solid 1px #ddd;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
+#streamlg{opacity:1;margin:;}
+.streambtn{margin:7px 9px;float:left;width:140px;height:auto;background:#000;padding:0 33px;border:solid 1px #ddd;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
 #streamlg{text-decoration:none;margin:;}
-#streamlg p{color:#fff;margin:9px 27px;font-size:12px;}
+.streambtn p{color:#fff;margin:9px 27px;font-size:12px;}
+.streambtn:hover{background:#555;}
 
-
-
+#leavecall{margin:7px 9px;float:left;width:140px;height:auto;background:#fa6161;padding:0 33px;border:solid 1px #ddd;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
+#leavecall p{color:#fff;margin:9px 27px;font-size:12px;}
+#leavecall:hover{background:#f77b7b;}
 
 
 
