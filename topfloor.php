@@ -1,3 +1,27 @@
+<?php
+// Begin session
+session_start();
+	
+// If username is not set, then go to the index page
+if (!isset($_SESSION['username'])) {
+	header('Location: index.php');
+}
+// Include database connection settings.
+include('includes/config.php');
+
+session_start();
+
+// set timeout period in seconds
+$inactive = 20;
+
+// check to see if $_SESSION['timeout'] is set
+if(isset($_SESSION['timeout']) ) {
+	$session_life = time() - $_SESSION['timeout'];
+	if($session_life > $inactive)
+        { session_destroy(); header("Location: index.php"); }
+}
+$_SESSION['timeout'] = time();
+?>
 <?php 
 require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
@@ -24,7 +48,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 <html lang="en">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>OpenTok API Sample &#151; Basic Tutorial</title>
+	<title>The Top Floor</title>
 	<link href="css/topfloor.css" type="text/css" rel="stylesheet" >
 	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
@@ -318,8 +342,16 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+	<style>
+		.title{float: right;
+	    font-size: 120px;
+	    margin: -12px 280px 0 0;
+	    width: 430px;}
+	</style>
 	<div id="wrapperTop">
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
+		<p class="title">TFLOOR<span style="font-size:13px">...control the streams published by the admin. You can drag and drop if you want.</span><p>
+		
 		<div class = "rightbox">
 			<div class="controls">
 				<a href="#" id="connectLin"><div id="con"><p>connecting...</p></div></a> 

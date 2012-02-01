@@ -33,9 +33,7 @@ if (isset($_SESSION['username'])) {
 			<p class="submit">
 				<input name="login" id="submit" class="crtbtn_bl" value="Login" type="submit">
 			</p>
-		</div>
-		<a href="forgot.php">Forgot Password?</a>
-		
+		</div>		
 </div>
 
 	</form>

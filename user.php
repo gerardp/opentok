@@ -7,8 +7,22 @@ if (!isset($_SESSION['username'])) {
 	header('Location: index.php');
 }
 // Include database connection settings.
-include('includes/config.php')
+include('includes/config.php');
+
+session_start();
+
+// set timeout period in seconds
+$inactive = 20;
+
+// check to see if $_SESSION['timeout'] is set
+if(isset($_SESSION['timeout']) ) {
+	$session_life = time() - $_SESSION['timeout'];
+	if($session_life > $inactive)
+        { session_destroy(); header("Location: index.php"); }
+}
+$_SESSION['timeout'] = time();
 ?>
+
 <?php
 require 'facebook.php';
 $facebook = new Facebook(array(
@@ -55,7 +69,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 <html lang="en">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>OpenTok API Sample &#151; Basic Tutorial</title>
+	<title>Top Floor Streamer</title>
 	<link href="css/user.css" type="text/css" rel="stylesheet" >
 	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
@@ -76,8 +90,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	var session = null;
 	var publisher = null;
 
-	var PUBLISHER_WIDTH = 100;
-	var PUBLISHER_HEIGHT = 100;
+	var PUBLISHER_WIDTH = 450;
+	var PUBLISHER_HEIGHT = 480;
 	var SUBSCRIBER_WIDTH = 160;
 	var SUBSCRIBER_HEIGHT = 120;
 
@@ -122,7 +136,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 		publisher = session.publish(stubDiv.id, {width: PUBLISHER_WIDTH, height: PUBLISHER_HEIGHT});
 
-		document.getElementById("status").innerHTML = "Trying to join the call...";
+		document.getElementById("status").innerHTML = "&nbsp;&nbsp;Please, allow camera access.";
 		document.getElementById("action").innerHTML = "&nbsp;";
 
 	}
@@ -398,12 +412,13 @@ $("#streams").append('<div class="users">'+
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
-				<div id="status" style='font:18px Arial,"Bitstream Vera Sans",sans-serif;'>You are connecting to the call</div>
+				<div id="status" style='font:18px Arial,"Bitstream Vera Sans",sans-serif;'>&nbsp;&nbsp;Start streaming now.</div>
 				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
+				<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>
 			</div>
 		</div>
 		<div id="localview">
-			<div id="myCamera" class="publisherContainer"></div>
+			<div id="myCamera" style="margin:-140px 140px 0 0" class="publisherContainer"></div>
 		</div>
 		<div id="streams"></div>
 		<div id="streams">

@@ -1,3 +1,28 @@
+<?php
+// Begin session
+session_start();
+	
+// If username is not set, then go to the index page
+if (!isset($_SESSION['username'])) {
+	header('Location: index.php');
+}
+// Include database connection settings.
+include('includes/config.php');
+
+session_start();
+
+// set timeout period in seconds
+$inactive = 20;
+
+// check to see if $_SESSION['timeout'] is set
+if(isset($_SESSION['timeout']) ) {
+	$session_life = time() - $_SESSION['timeout'];
+	if($session_life > $inactive)
+        { session_destroy(); header("Location: index.php"); }
+}
+$_SESSION['timeout'] = time();
+?>
+
 <?php 
 require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
@@ -24,7 +49,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 <html lang="en">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>OpenTok API Sample &#151; Basic Tutorial</title>
+	<title>Control Room</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 	<link href="css/style.css" type="text/css" rel="stylesheet" >
 	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
@@ -278,7 +303,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			moderationControls.style.cssFloat = "bottom";
 			moderationControls.innerHTML =
 			'<li id="unpublish"><a href="#" onclick="javascript:forceUnpublishStream(\'' + stream.streamId + '\')">Unpublish</a><br></li>'
-			+ '<li id="connect"><a href="javascript:void(0)" class="getobj" onclick="javascript:joinTopFloor(\''+sid+','+cid+'\')">add to TFloor</a></li>'
+			+ '<li id="connect"><a href="javascript:void(0)" class="getobj" onclick="javascript:joinTopFloor(\''+sid+','+cid+'\')">Add to TFloor</a></li>'
 			container.appendChild(moderationControls);
 
 			subscribers[stream.streamId] = session.subscribe(stream, divId);
@@ -310,12 +335,21 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		</script>
 	</head>
 	<body>
+		<style>
+			.title{float: right;
+		    font-size: 120px;
+		    margin: -27px 290px 0 0;
+		    width: 310px;}
+		</style>
 		<div id="wrapper">
 			<h1><img src="images/topfloor.png"/></h1>
-			<div id="topBar">
+			<p class="title">MANAGE<span style="font-size:13px">...add streams to the top floor. You can unpublish a stream if you want..</span><p>
+			<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>
+			
+			<div style="display:none" id="topBar">
 				<div id="links">
-					<a href="#" id ="connectLin" onClick="javascript:connect()"><div id="con"><p>Administer</p></div></a>
-					<a href="#" id ="disconnectLink" onClick="javascript:disconnect()" /><div id="dis"><p>Logout</p></div></a>
+					<!--<a href="#" id ="connectLin" onClick="javascript:connect()"><div id="con"><p>Administer</p></div></a>
+					<a href="#" id ="disconnectLink" onClick="javascript:disconnect()" /><div id="dis"><p>Logout</p></div></a>-->
 				</div>
 			</div>
 			<div id="myCamera" class="publisherContainer" ></div>
@@ -381,7 +415,11 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		session.connect(apiKey, token);
 	}
 	</script>
-
+<script>
+	$(document).ready(function(){
+		connect();
+	})
+</script>
 
 </body>
 
