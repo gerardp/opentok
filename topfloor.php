@@ -28,6 +28,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	<link href="css/topfloor.css" type="text/css" rel="stylesheet" >
 	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 	<script src="jqueryswf.js"></script>	
 	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>	
 	<script type="text/javascript" charset="utf-8">
@@ -307,45 +308,12 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	window.onload = function(){
 		$("h1").css("display","block");
 		$("h1").animate({opacity:1},2300);
-
-
 	}
-	function lala(){
-		//alert($("object").attr("id"));
-		var a = [];
-		$("#myCamera > object").each(function(){
-			var param = $("param[name='flashvars']").val();
-			var id = $(this).attr("id");
-			a.push(id);
-			vai(param,id)
-		});
-		function vai(param,id){
-			$("#streams").append('<div class="users">'+										
-			'<object width="150" height="150" type="application/x-shockwave-flash" id="publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_publishwidget.swf?partnerId=11409442">'+
-			'<param name="allowscriptaccess" value="always">'+
-			'<param name="cameraSelected" value="false">'+
-			'<param name="wmode" value="transparent">'+
-			'<param name="flashvars" value="width=420&height=265&publisherId=publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1&connectionId=c90a0f85be955d187000d6b39a8b27113c1ec8f0&sessionId=1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4&token=T1==cGFydG5lcl9pZD0xMTQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-			'</object>'+
-			'</div>');
-		}
-	}
+  
 
-/*$(document).ready(function(){
-$("#streams").append('<div class="users">'+										
-'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-'<param name="allowscriptaccess" value="always">'+
-'<param name="cameraSelected" value="false">'+
-'<param name="wmode" value="transparent">'+
-'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-'</object>'+
-'</div>');
-})*/
 
 $(document).ready(function(){
-	startPublishing()
-
-	
+	startPublishing()	
 });
 </script>
 </head>
@@ -397,6 +365,29 @@ $(document).ready(function(){
 
 			<script>
 
+			$("#unpublish").live("click",function(){
+				var gi = $(this).children("a").attr("id");
+				var lala = gi.split("subscriber_");
+				alert(lala);
+				var po = lala[1].split("_")
+				alert(po);
+				var pora = po[0];
+				alert(pora);
+				$("object").each(function(){
+					var shit = $(this).attr("id");
+					if(shit == gi){
+						$(this).parent().remove();
+						$.ajax({
+							type: "POST",
+							url: "includes/removeguest.php",
+							data:({removeit: pora}),
+							success: function(data) {
+								alert("yes")
+							}
+						});
+					}
+				})
+			});
 
 			var refreshId = setInterval(check, 7000);
 
@@ -423,7 +414,7 @@ $(document).ready(function(){
 				if(ismember != 1 && ismember!=members[0]){
 					members.push(ismember)
 				}
-
+				
 				var users = $(".users").length;
 
 				$.getJSON('json/obj.json', function(e) {
@@ -441,11 +432,17 @@ $(document).ready(function(){
 								'<param name="wmode" value="transparent">'+
 								'<param name="flashvars" value="'+item.flashvars+'">'+
 								'</object>'+
+								'<ul>'+
+								'<li id="unpublish"><a id="'+item.objid+'" href="#">Unpublish</a><br></li>'+
+								'</ul>'+
 								'</div>');	
 								list.push(item.objid,item.flashvars);
 							}
 						}
+						$('.users').draggable();
+					  
 					});
+					
 					$(".users > object").each(function(i){
 						var getid = $(this).attr("id");
 						if($.inArray(getid, arr) === -1){
@@ -468,6 +465,11 @@ $(document).ready(function(){
 
 			var refreshId = setInterval(connectar, 5000);
 
+$( init );
+
+function init() {
+  $('.users').draggable();
+}
 			</script>
 		</body>
 

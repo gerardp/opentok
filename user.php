@@ -361,6 +361,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			vai(param,id)
 		});
 		function vai(param,id){
+			
+
 			$("#streams").append('<div class="users">'+										
 			'<object width="150" height="150" type="application/x-shockwave-flash" id="publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_publishwidget.swf?partnerId=11409442">'+
 			'<param name="allowscriptaccess" value="always">'+

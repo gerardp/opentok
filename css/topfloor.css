@@ -1,7 +1,7 @@
 body{background:#F9F9F9;}
 
 #wrapperTop{
-	width:880px;
+	width:980px;
 	margin:auto;
 }
 #myCamera{display:none;}
@@ -58,10 +58,12 @@ li a{text-decoration:none;color:#fff;}
 li a:hover{text-decoration:underline;color:#444;}
 
 #streams{clear:both;float:left;margin:50px 0;}
-.users{float: left;
-height: 230px;
-padding: 10px 10px 0 0;
-width: 264px;}
+.users{background: none repeat scroll 0 0 #DDDDFF;
+  float: left;
+  height: 234px;
+  margin: 20px 10px;
+  padding: 20px;
+  width: 265px;}
 
 
 
