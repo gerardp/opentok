@@ -12,7 +12,7 @@ include('includes/config.php');
 session_start();
 
 // set timeout period in seconds
-$inactive = 20;
+$inactive = 600;
 
 // check to see if $_SESSION['timeout'] is set
 if(isset($_SESSION['timeout']) ) {
@@ -22,6 +22,31 @@ if(isset($_SESSION['timeout']) ) {
 }
 $_SESSION['timeout'] = time();
 ?>
+
+
+<?php
+require 'facebook.php';
+$facebook = new Facebook(array(
+  'appId'  => '100697156725418',
+  'secret' => 'e9e8f318673716c764c63f24801a6523',
+));
+$user = $facebook->getUser();
+if ($user) {
+  try {
+    $user_profile = $facebook->api('/me');
+  } catch (FacebookApiException $e) {
+    error_log($e);
+    $user = null;
+  }
+}
+if ($user) {
+  $logoutUrl = $facebook->getLogoutUrl();
+} else {
+}
+?>
+
+
+
 <?php 
 require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
@@ -400,11 +425,8 @@ $(document).ready(function(){
 			$("#unpublish").live("click",function(){
 				var gi = $(this).children("a").attr("id");
 				var lala = gi.split("subscriber_");
-				alert(lala);
 				var po = lala[1].split("_")
-				alert(po);
 				var pora = po[0];
-				alert(pora);
 				$("object").each(function(){
 					var shit = $(this).attr("id");
 					if(shit == gi){
@@ -414,7 +436,6 @@ $(document).ready(function(){
 							url: "includes/removeguest.php",
 							data:({removeit: pora}),
 							success: function(data) {
-								alert("yes")
 							}
 						});
 					}
@@ -441,12 +462,13 @@ $(document).ready(function(){
 			var list = new Array();
 			var members = new Array();
 			var arr = new Array()
-
+			var col;
+			var colors = ["#DDDDFF","637aac","b5ff8c","ff8c8c","ffeea1","aeffa1"]
 			function porra(){
 				if(ismember != 1 && ismember!=members[0]){
 					members.push(ismember)
 				}
-				
+				col = colors[Math.floor(Math.random()*colors.length)]
 				var users = $(".users").length;
 
 				$.getJSON('json/obj.json', function(e) {
@@ -457,7 +479,7 @@ $(document).ready(function(){
 
 						if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
 							if(e != e.length){
-								$("#streams").append('<div class="users">'+										
+								$("#streams").append('<div class="users" style="background:#'+col+'">'+										
 								'<object width="264" height="198" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
 								'<param name="allowscriptaccess" value="always">'+
 								'<param name="cameraSelected" value="false">'+

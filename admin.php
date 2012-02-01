@@ -12,7 +12,7 @@ include('includes/config.php');
 session_start();
 
 // set timeout period in seconds
-$inactive = 20;
+$inactive = 600;
 
 // check to see if $_SESSION['timeout'] is set
 if(isset($_SESSION['timeout']) ) {
@@ -331,6 +331,10 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		}
 
 
+		window.onload = function(){
+			$("h1").css("display","block");
+			$("h1").animate({opacity:1},2300);
+		}
 
 		</script>
 	</head>
@@ -344,7 +348,12 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		<div id="wrapper">
 			<h1><img src="images/topfloor.png"/></h1>
 			<p class="title">MANAGE<span style="font-size:13px">...add streams to the top floor. You can unpublish a stream if you want..</span><p>
-			<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>
+			<a style="margin: 30px 0 0 0;
+				float: left;
+				text-decoration: none;"href="topfloor.php" target="_blank"><div>&nbsp;&nbsp;Top Floor page</div></a>
+				<a style="margin: 30px 0 0 0;
+					float: left;
+					text-decoration: none;"href="includes/logout.php"><div>&nbsp;&nbsp;/&nbsp;&nbsp;logout</div></a>
 			
 			<div style="display:none" id="topBar">
 				<div id="links">

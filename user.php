@@ -9,10 +9,8 @@ if (!isset($_SESSION['username'])) {
 // Include database connection settings.
 include('includes/config.php');
 
-session_start();
-
 // set timeout period in seconds
-$inactive = 20;
+$inactive = 600;
 
 // check to see if $_SESSION['timeout'] is set
 if(isset($_SESSION['timeout']) ) {
@@ -23,26 +21,6 @@ if(isset($_SESSION['timeout']) ) {
 $_SESSION['timeout'] = time();
 ?>
 
-<?php
-require 'facebook.php';
-$facebook = new Facebook(array(
-  'appId'  => '100697156725418',
-  'secret' => 'e9e8f318673716c764c63f24801a6523',
-));
-$user = $facebook->getUser();
-if ($user) {
-  try {
-    $user_profile = $facebook->api('/me');
-  } catch (FacebookApiException $e) {
-    error_log($e);
-    $user = null;
-  }
-}
-if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
-} else {
-}
-?>
 <?php 
 require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
@@ -415,6 +393,7 @@ $("#streams").append('<div class="users">'+
 				<div id="status" style='font:18px Arial,"Bitstream Vera Sans",sans-serif;'>&nbsp;&nbsp;Start streaming now.</div>
 				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
 				<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>
+				<a href="includes/logout.php"><div>&nbsp;&nbsp;logout</div></a>
 			</div>
 		</div>
 		<div id="localview">
