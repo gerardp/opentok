@@ -44,8 +44,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	var session = null;
 	var publisher = null;
 
-	var PUBLISHER_WIDTH = 420;
-	var PUBLISHER_HEIGHT = 265;
+	var PUBLISHER_WIDTH = 100;
+	var PUBLISHER_HEIGHT = 100;
 	var SUBSCRIBER_WIDTH = 160;
 	var SUBSCRIBER_HEIGHT = 120;
 
@@ -100,6 +100,13 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			// Stop the stream
 			session.unpublish(publisher);
 			publisher = null;
+			$.ajax({
+				type: "POST",
+				url: "includes/removeguest.php",
+				data:({streamId: sid}),
+				success: function() {
+				}
+			});
 		}
 
 		document.getElementById("status").innerHTML = "Leaving the call...";
@@ -425,14 +432,30 @@ $("#streams").append('<div class="users">'+
 				}
 			
 				var users = $(".users").length;
+				var sessionString = "";
+				var sessionArray = new Array();
+				var sessionSplit = "";
+				var finalFlashvars
 				
 				$.getJSON('json/obj.json', function(e) {
 					$.each(e, function(l, v){
 						arr.push(v.objid);
 					})
+					
 					$.each(e, function(i, item) {
 						
+				/*		 sessionSplit = item.flashvars.split("&");
+						 sessionSplit[2] = "sessionId=1_MX4xMTQwOTQ0Mn4xMjcuMC4wLjF-MjAxMi0wMi0wMSAwMzo1MDoxMy4yMDQ5NjIrMDA6MDB-MC41NTQ0Mzc5MjEyMTV-";
+						for(d=0;d<=sessionSplit.length;d++){
+							sessionArray.push(sessionSplit[d]+"&");
+						}
+						for(k=0;k<=sessionArray.length;k++){
+							finalFlashvars+=sessionArray[k];
+								
+						}
+						finalFlashvars	*/
 						
+											
 						if(ismember == item.streamId ){
 							go = true;
 						}

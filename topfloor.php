@@ -341,8 +341,11 @@ $("#streams").append('<div class="users">'+
 '</div>');
 })*/
 
+$(document).ready(function(){
+	startPublishing()
 
-</script>
+	
+});
 </script>
 </head>
 <body>
@@ -350,16 +353,13 @@ $("#streams").append('<div class="users">'+
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
-			<a href="#" id ="connectLin" onclick="startPublishing()"><div id="con"><p>connect</p></div></a> 
+				<a href="#" id="connectLin"><div id="con"><p>connecting...</p></div></a> 
 			</div>
 		</div>
 		<div id="localview">
 			<div id="myCamera" class="publisherContainer"></div>
 		</div>
 		<div id="streams"></div>
-		<div id="streams">
-		</div>
-
 		<div id="main">
 			<div id="stream_1" class="right-pic"></div>
 		</div>
@@ -397,7 +397,7 @@ $("#streams").append('<div class="users">'+
 			<script>
 
 
-		var refreshId = setInterval(check, 7000);
+			var refreshId = setInterval(check, 7000);
 
 			function check() {
 				var y = "yes";
@@ -410,56 +410,61 @@ $("#streams").append('<div class="users">'+
 					}
 				});
 			}
+			
+			var connected = false;
+			
 			var go = false;
 			var list = new Array();
 			var members = new Array();
 			var arr = new Array()
-			
+
 			function porra(){
 				if(ismember != 1 && ismember!=members[0]){
 					members.push(ismember)
 				}
-			
+
 				var users = $(".users").length;
-				
+
 				$.getJSON('json/obj.json', function(e) {
 					$.each(e, function(l, v){
 						arr.push(v.objid);
 					})
 					$.each(e, function(i, item) {
-						
-						
-					/*	if(ismember == item.streamId ){
-							go = true;
+
+						if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
+							if(e != e.length){
+								$("#streams").append('<div class="users">'+										
+								'<object width="264" height="198" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+								'<param name="allowscriptaccess" value="always">'+
+								'<param name="cameraSelected" value="false">'+
+								'<param name="wmode" value="transparent">'+
+								'<param name="flashvars" value="'+item.flashvars+'">'+
+								'</object>'+
+								'</div>');	
+								list.push(item.objid,item.flashvars);
+							}
 						}
-						
-						if(go == true){ */
-							if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
-								if(e != e.length){
-									$("#streams").append('<div class="users">'+										
-									'<object width="264" height="198" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-									'<param name="allowscriptaccess" value="always">'+
-									'<param name="cameraSelected" value="false">'+
-									'<param name="wmode" value="transparent">'+
-									'<param name="flashvars" value="'+item.flashvars+'">'+
-									'</object>'+
-									'</div>');	
-									list.push(item.objid,item.flashvars);
-								}
-							}
-					//	}
-					//	alert(arr);
-						$(".users > object").each(function(i){
-							
-							var getid = $(this).attr("id");
-							if($.inArray(getid, arr) === -1 || i==-1){
-								$(this).parent().remove();
-							}
-						})
 					});
+					$(".users > object").each(function(i){
+
+						var getid = $(this).attr("id");
+						if($.inArray(getid, arr) === -1){
+							$(this).parent().remove();
+						}
+					})
 				});
 				arr = []
 			}
+
+
+			function connectar(){
+					$("#con").css("background-color","#7df46d");
+					$("#con").children("p").html("connected");
+					$("#con").children("p").css("color","#555");
+					
+			}
+
+			var refreshId = setInterval(connectar, 5000);
 
 			</script>
 		</body>

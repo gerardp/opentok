@@ -25,10 +25,9 @@ float:left;
 	margin:30px 16px;
 }
 #topBar{float:right;height:150px;width:500px;}
-#con{float:left;width:140px;height:auto;background:#00b200;padding:0 33px;border:solid 1px #ccc;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
+#con{float:left;width:140px;height:auto;background:#fc7eef;padding:0 33px;border:solid 1px #ccc;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
 #connectLin{text-decoration:none;}
 #connectLin p{color:#fff;margin:9px 27px;}
-#con:hover{background:#3674DF;}
 
 #dis{float:left;width:140px;height:auto;background:#d27d4d;padding:0 33px;border:solid 1px #ccc;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
 #disconnectLink{text-decoration:none}
@@ -57,7 +56,10 @@ li a{text-decoration:none;color:#fff;}
 li a:hover{text-decoration:underline;color:#444;}
 
 #streams{clear:both;float:left;margin:50px 0;}
-.users{width:150px;height:150px;background:#000;float:left;}
+.users{float: left;
+height: 230px;
+padding: 10px 10px 0 0;
+width: 264px;}
 
 
 

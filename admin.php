@@ -210,6 +210,13 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		function forceUnpublishStream(streamId) {
 			//alert(session.signal(subscribers[streamId].stream))
 			session.forceUnpublish(subscribers[streamId].stream);
+			$.ajax({
+				type: "POST",
+				url: "includes/removeguest.php",
+				data:({streamId: sid}),
+				success: function() {
+				}
+			});
 		}
 
 		//--------------------------------------
