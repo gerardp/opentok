@@ -1,0 +1,130 @@
+*{margin:0;padding:0;}
+body{
+background-color:#f9f9f9;
+padding-top:30px;
+font:11px Arial,"Bitstream Vera Sans",sans-serif;
+}
+a {
+color: #555;
+text-decoration:none;
+}
+a:hover {
+color: red;
+}
+h1{font-weight: normal}
+form{
+margin-left:8px;
+padding:16px 16px 40px 16px;
+font-weight:normal;
+-moz-box-shadow:rgba(200,200,200,1) 0 4px 18px;
+-webkit-box-shadow:rgba(200,200,200,1) 0 4px 18px;
+-khtml-box-shadow:rgba(200,200,200,1) 0 4px 18px;
+box-shadow:rgba(200,200,200,1) 0 4px 18px;
+background:#fff;
+border:1px solid #e5e5e5;
+}
+.crtbtn_gr{
+	border:1px outset #ccc;
+	padding:5px 2px 4px;
+	color:#fff;
+	min-width: 100px;
+	text-align: center;
+	cursor:pointer;
+	background:#000;
+	background:-webkit-gradient(linear, left top, left bottom,from(#a3d030),to(#729e01));
+	background:-moz-linear-gradient(top,#a3d030,#729e01);
+	background:-o-linear-gradient(top,#a3d030,#729e01);
+	background:linear-gradient(top,#a3d030,#729e01);
+	-moz-border-radius:7px; -webkit-border-radius:7px;
+}
+.small_bt{
+	min-width: 10px;
+	font-size: 10px;
+}
+.crtbtn_bl{
+	border:1px outset #ccc;
+	padding:5px 2px 4px;
+	color:#fff;
+	min-width: 100px;
+	text-align: center;
+	cursor:pointer;
+	background:#0a5096;
+	background:-webkit-gradient(linear, left top, left bottom,from(#4e9acf),to(#0a5096));
+	background:-moz-linear-gradient(top,#4e9acf,#0a5096);
+	background:-o-linear-gradient(top,#4e9acf,#0a5096);
+	background:linear-gradient(top,#4e9acf,#0a5096);
+	-moz-border-radius:7px; 
+	-webkit-border-radius:7px;
+}
+
+.crtbtn_rd{
+	border:1px outset #ccc;
+	padding:5px 2px 4px;
+	color:#fff;
+	min-width: 100px;
+	text-align: center;
+	cursor:pointer;	
+	background:#640202;
+	background:-webkit-gradient(linear, left top, left bottom,from(#9f0708),to(#640202));
+	background:-moz-linear-gradient(top,#9f0708,#640202);
+	background:-o-linear-gradient(top,#9f0708,#640202);
+	background:linear-gradient(top,#9f0708,#640202);
+	-moz-border-radius:7px; 
+	-webkit-border-radius:7px;
+}
+
+.crtbtn_gr:hover, .crtbtn_bl:hover, .crtbtn_rd:hover{
+	color:#000;
+	background:#ddd;
+	background:-webkit-gradient(linear, left top, left bottom,from(#fff),to(#ddd));
+	background:-moz-linear-gradient(top,#fff,#ddd);
+	background:-o-linear-gradient(top,#fff,#ddd);
+	background:linear-gradient(top,#fff,#ddd);
+}
+#login form p{
+margin-bottom:0;
+}
+label{
+color:#777777;
+font-size:14px;
+}
+form .submit,.alignright{
+float:right;
+}
+form p{
+margin-bottom:24px;
+}
+#login{
+width:320px;
+margin:7em auto;
+}
+#login_error,.message{
+margin:0 0 16px 8px;
+border-width:1px;
+border-style:solid;
+padding:12px;
+-moz-border-radius:3px;
+-khtml-border-radius:3px;
+-webkit-border-radius:3px;
+border-radius:3px;
+}
+#username,#password{
+font-size:18px;
+width:97%;
+padding:3px;
+margin-top:2px;
+margin-right:6px;
+margin-bottom:16px;
+border:1px solid #e5e5e5;
+background:#fbfbfb;
+}
+#pass:focus,#email:focus{
+border:1px solid #cccccc;
+background:#dfdfdf;
+}
+input{
+color:#555;
+}
+.clear{
+clear:both;
+}

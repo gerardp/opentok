@@ -1,5 +1,36 @@
+<?php
+// Begin session
+session_start();
+	
+// If username is not set, then go to the index page
+if (!isset($_SESSION['username'])) {
+	header('Location: index.php');
+}
+// Include database connection settings.
+include('includes/config.php')
+?>
+<?php
+require 'facebook.php';
+$facebook = new Facebook(array(
+  'appId'  => '100697156725418',
+  'secret' => 'e9e8f318673716c764c63f24801a6523',
+));
+$user = $facebook->getUser();
+if ($user) {
+  try {
+    $user_profile = $facebook->api('/me');
+  } catch (FacebookApiException $e) {
+    error_log($e);
+    $user = null;
+  }
+}
+if ($user) {
+  $logoutUrl = $facebook->getLogoutUrl();
+} else {
+}
+?>
 <?php 
-require_once 'OpenTokSDK.php'; 
+require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
 $client = ""; 
 if (isset($_SERVER["REMOTE_ADDR"]))    { 
@@ -26,6 +57,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>OpenTok API Sample &#151; Basic Tutorial</title>
 	<link href="css/user.css" type="text/css" rel="stylesheet" >
+	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 	<script src="jqueryswf.js"></script>	
 	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>	
@@ -92,6 +124,13 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 		document.getElementById("status").innerHTML = "Trying to join the call...";
 		document.getElementById("action").innerHTML = "&nbsp;";
+		$.ajax({
+			type: "POST",
+			url: "includes/form.php",
+			data:({streamId: sid, connectionId: cid,}),
+			success: function() {
+			}
+		});
 	}
 
 	// Called when user wants to stop participating in the call
@@ -173,7 +212,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 		// Now possible to join a call - update status and controls
 		//document.getElementById("status").innerHTML = "You are watching the call";
-		document.getElementById("action").innerHTML = '<a href="#" onclick="startPublishing()">Start Streaming</a>';
+		document.getElementById("action").innerHTML = '<a href="#" id="streamlg"><div id="streambtn"><p>Start Streaming</p></div></a>';
 
 		// Display any existing streams on screen
 		for (var i = 0; i < event.streams.length; i++) {
@@ -258,13 +297,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 				var sid =  event.streams[0].streamId;
 				var cid = event.streams[0].connection.connectionId;
 				ismember = sid;
-				$.ajax({
-					type: "POST",
-					url: "includes/form.php",
-					data:({streamId: sid, connectionId: cid,}),
-					success: function() {
-					}
-				});
+
 
 
 				// Update status, controls and counts
@@ -338,31 +371,23 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		}
 	}
 
-/*$(document).ready(function(){
-$("#streams").append('<div class="users">'+										
-'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-'<param name="allowscriptaccess" value="always">'+
-'<param name="cameraSelected" value="false">'+
-'<param name="wmode" value="transparent">'+
-'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-'</object>'+
-'</div>');
-})*/
-
 
 </script>
-</script>
+
+
 </head>
 <body>
 	<div id="wrapperUser">
+		<p>
+	        <fb:login-button autologoutlink="true" perms="email,user_birthday,status_update,publish_stream"></fb:login-button>
+	    </p>
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
 				<div id="status">You are connecting to the call</div>
 				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
 				<div id="count-header">Not yet connected</div>
-				<div id="watchers">&nbsp;</div>
-			</div>
+				<div id="watchers">&nbsp;</div>			</div>
 		</div>
 		<div id="localview">
 			<div id="myCamera" class="publisherContainer"></div>
@@ -406,11 +431,15 @@ $("#streams").append('<div class="users">'+
 			</script>
 
 			<script>
+			
 
-
-			var refreshId = setInterval(check, 7000);
+			var refreshId = setInterval(check, 900);
 
 			function check() {
+				
+			//	$("#streamlg").animate({opacity:1},1000)
+				
+				
 				var y = "yes";
 				$.ajax({
 					type: "POST",
@@ -487,6 +516,7 @@ $("#streams").append('<div class="users">'+
 				arr = []
 			}
 
+			
 			</script>
 		</body>
 

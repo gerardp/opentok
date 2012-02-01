@@ -1,3 +1,5 @@
+body{background:#F9F9F9;}
+
 #wrapperTop{
 	width:880px;
 	margin:auto;
@@ -25,7 +27,7 @@ float:left;
 	margin:30px 16px;
 }
 #topBar{float:right;height:150px;width:500px;}
-#con{float:left;width:140px;height:auto;background:#fc7eef;padding:0 33px;border:solid 1px #ccc;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
+#con{margin:-5px 6px;float:left;width:140px;height:auto;background:#000000;padding:0 33px;border:solid 1px #ccc;-moz-border-radius:5px;border-radius:5px;-web-border-radius:5px;}
 #connectLin{text-decoration:none;}
 #connectLin p{color:#fff;margin:9px 27px;}
 

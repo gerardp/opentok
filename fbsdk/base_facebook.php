@@ -854,6 +854,7 @@ abstract class BaseFacebook
     }
 
     $opts = self::$CURL_OPTS;
+    $opts[CURLOPT_SSL_VERIFYPEER];
     if ($this->getFileUploadSupport()) {
       $opts[CURLOPT_POSTFIELDS] = $params;
     } else {

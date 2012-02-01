@@ -1,5 +1,5 @@
 <?php 
-require_once 'OpenTokSDK.php'; 
+require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
 $client = ""; 
 if (isset($_SERVER["REMOTE_ADDR"]))    { 
@@ -26,6 +26,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>OpenTok API Sample &#151; Basic Tutorial</title>
 	<link href="css/topfloor.css" type="text/css" rel="stylesheet" >
+	<link rel="shortcut icon" type="image/x-icon" href="images/favi.ico">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 	<script src="jqueryswf.js"></script>	
 	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>	
@@ -446,7 +447,6 @@ $(document).ready(function(){
 						}
 					});
 					$(".users > object").each(function(i){
-
 						var getid = $(this).attr("id");
 						if($.inArray(getid, arr) === -1){
 							$(this).parent().remove();
@@ -458,9 +458,11 @@ $(document).ready(function(){
 
 
 			function connectar(){
-					$("#con").css("background-color","#7df46d");
+					$("#con").css("background-color","#4789e4");
 					$("#con").children("p").html("connected");
-					$("#con").children("p").css("color","#555");
+					$("#con").children("p").css("color","#fff");
+					$("#con").animate({opacity:0},1400);
+					$("#con").css("display","none");
 					
 			}
 
