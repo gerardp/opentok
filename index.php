@@ -25,7 +25,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>OpenTok API Sample &#151; Basic Tutorial</title>
-	<link href="style.css" type="text/css" rel="stylesheet" >
+	<link href="css/user.css" type="text/css" rel="stylesheet" >
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 	<script src="jqueryswf.js"></script>	
 	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>	
@@ -251,7 +251,6 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 				var sid =  event.streams[0].streamId;
 				var cid = event.streams[0].connection.connectionId;
 				ismember = sid;
-				alert("porra ta aqui" + ismember);
 				$.ajax({
 					type: "POST",
 					url: "includes/form.php",
@@ -332,19 +331,19 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		}
 	}
 
-	/*$(document).ready(function(){
-	$("#streams").append('<div class="users">'+										
-	'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-	'<param name="allowscriptaccess" value="always">'+
-	'<param name="cameraSelected" value="false">'+
-	'<param name="wmode" value="transparent">'+
-	'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
-	'</object>'+
-	'</div>');
-	})*/
+/*$(document).ready(function(){
+$("#streams").append('<div class="users">'+										
+'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+'<param name="allowscriptaccess" value="always">'+
+'<param name="cameraSelected" value="false">'+
+'<param name="wmode" value="transparent">'+
+'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+'</object>'+
+'</div>');
+})*/
 
 
-	</script>
+</script>
 </script>
 </head>
 <body>
@@ -362,9 +361,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			<div id="myCamera" class="publisherContainer"></div>
 		</div>
 		<div id="streams"></div>
-		<a href="#" onclick="lala()">asdasdasd</a>
 		<div id="streams">
-
 		</div>
 
 		<div id="main">
@@ -404,7 +401,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			<script>
 
 
-			var refreshId = setInterval(check, 4000);
+			var refreshId = setInterval(check, 7000);
 
 			function check() {
 				var y = "yes";
@@ -417,30 +414,54 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 					}
 				});
 			}
+			var go = false;
 			var list = new Array();
+			var members = new Array();
+			var arr = new Array()
+			
 			function porra(){
-				alert("member id(sid):" +ismember);
+				if(ismember != 1 && ismember!=members[0]){
+					members.push(ismember)
+				}
+			
+				var users = $(".users").length;
+				
 				$.getJSON('json/obj.json', function(e) {
-
+					$.each(e, function(l, v){
+						arr.push(v.objid);
+					})
 					$.each(e, function(i, item) {
-						alert(item.streamId)
-
-						if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
-							if(e != e.length){
-								$("#streams").append('<div class="users">'+										
-								'<object width="150" height="150" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
-								'<param name="allowscriptaccess" value="always">'+
-								'<param name="cameraSelected" value="false">'+
-								'<param name="wmode" value="transparent">'+
-								'<param name="flashvars" value="'+item.flashvars+'">'+
-								'</object>'+
-								'</div>');	
-								list.push(item.objid,item.flashvars);
-							}
+						
+						
+						if(ismember == item.streamId ){
+							go = true;
 						}
-
+						
+						if(go == true){
+						/*	if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
+								if(e != e.length){
+									$("#streams").append('<div class="users">'+										
+									'<object width="150" height="150" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+									'<param name="allowscriptaccess" value="always">'+
+									'<param name="cameraSelected" value="false">'+
+									'<param name="wmode" value="transparent">'+
+									'<param name="flashvars" value="'+item.flashvars+'">'+
+									'</object>'+
+									'</div>');	
+									list.push(item.objid,item.flashvars);
+								}
+							}*/
+						}
+					//	alert(arr);
+						$(".users > object").each(function(){
+							var getid = $(this).attr("id");
+							if($.inArray(getid, arr) === -1){
+								$(this).parent().remove();
+							}
+						})
 					});
 				});
+				arr = []
 			}
 
 			</script>

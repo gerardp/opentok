@@ -25,23 +25,22 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>OpenTok API Sample &#151; Basic Tutorial</title>
+	<link href="css/topfloor.css" type="text/css" rel="stylesheet" >
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
-	<link href="style.css" type="text/css" rel="stylesheet" >
-	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>
+	<script src="jqueryswf.js"></script>	
+	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>	
 	<script type="text/javascript" charset="utf-8">
-	
-	var apiKey;
-	var sessionId;
-	var token;
-	
+
 	function porra(e){
-	 apiKey = <?php print API_Config::API_KEY?>;
-	 sessionId = e;
-	 token = '<?php print $apiObj->generate_token("1_MX4xMTQwOTQ0Mn4xMjcuMC4wLjF-MjAxMi0wMS0zMCAyMzo0NTozOS4yNDE5NzkrMDA6MDB-MC4xNjE5OTA3ODQwMX4", "moderator"); ?>';	// Add to the page using the OpenTok server-side libraries.
+		apiKey = <?php print API_Config::API_KEY?>;
+		sessionId = e;
+		token = '<?php print $apiObj->generate_token(); ?>';	// Add to the page using the OpenTok server-side libraries.
 	}
-	
-	porra('1_MX4xMTQwOTQ0Mn4xMjcuMC4wLjF-MjAxMi0wMS0zMCAyMzo0NTozOS4yNDE5NzkrMDA6MDB-MC4xNjE5OTA3ODQwMX4');
-	
+
+
+	porra('1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4');
+
+
 	var session = null;
 	var publisher = null;
 
@@ -52,6 +51,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 	var participants = 0;
 	var watchers = 0;
+	var ismember = 1;;
 
 	var learn = false; // Set to true if you want detailed event listener alerting
 
@@ -121,6 +121,8 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			session.subscribe(stream, stubDiv.id, {width: SUBSCRIBER_WIDTH, height: SUBSCRIBER_HEIGHT});
 			participants++;
 		}
+
+
 	}
 
 	// Called to unsubscribe from an existing stream
@@ -225,14 +227,38 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			dumpStreams(event.streams, "");
 		}
 
+
+
 		// Display streams on screen, except for this page's own stream.
 
 		for (var i = 0; i < event.streams.length; i++) {
+
+
+
 			if (event.streams[i].connection.connectionId != event.target.connection.connectionId) {
 				subscribeToStream(event.target, event.streams[i]);
 				watchers--;
 			} else {
 				// Our publisher just started streaming
+
+
+
+				//alert(event.streams.toSource())
+				//alert(event.streams[0].streamId);
+				//alert(event.streams[0].connection.connectionId);
+
+				// AJAX
+				var sid =  event.streams[0].streamId;
+				var cid = event.streams[0].connection.connectionId;
+				ismember = sid;
+				$.ajax({
+					type: "POST",
+					url: "includes/form.php",
+					data:({streamId: sid, connectionId: cid,}),
+					success: function() {
+					}
+				});
+
 
 				// Update status, controls and counts
 				document.getElementById("status").innerHTML = "You are participating in the call";
@@ -267,7 +293,6 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 				// Update status, controls and counts
 				document.getElementById("status").innerHTML = "You are watching the call";
-				document.getElementById("action").innerHTML = '<a href="#" onclick="startPublishing()">Join call</a>';
 
 				participants--;
 				watchers++;
@@ -281,60 +306,165 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	window.onload = function(){
 		$("h1").css("display","block");
 		$("h1").animate({opacity:1},2300);
-		
+
 
 	}
+	function lala(){
+		//alert($("object").attr("id"));
+		var a = [];
+		$("#myCamera > object").each(function(){
+			var param = $("param[name='flashvars']").val();
+			var id = $(this).attr("id");
+			a.push(id);
+			vai(param,id)
+		});
+		function vai(param,id){
+			$("#streams").append('<div class="users">'+										
+			'<object width="150" height="150" type="application/x-shockwave-flash" id="publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_publishwidget.swf?partnerId=11409442">'+
+			'<param name="allowscriptaccess" value="always">'+
+			'<param name="cameraSelected" value="false">'+
+			'<param name="wmode" value="transparent">'+
+			'<param name="flashvars" value="width=420&height=265&publisherId=publisher_1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4_1&connectionId=c90a0f85be955d187000d6b39a8b27113c1ec8f0&sessionId=1_MX4xMTQwOTQ0Mn4xOTIuMTY4LjEuMX4yMDEyLTAxLTI3IDIwOjExOjQ2LjM3MTMzNCswMDowMH4wLjM3MjQzNzY2MjQ0MX4&token=T1==cGFydG5lcl9pZD0xMTQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+			'</object>'+
+			'</div>');
+		}
+	}
 
-	</script>
+/*$(document).ready(function(){
+$("#streams").append('<div class="users">'+										
+'<object width="150" height="150" type="application/x-shockwave-flash" id="subscriber_1061994175_1" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+'<param name="allowscriptaccess" value="always">'+
+'<param name="cameraSelected" value="false">'+
+'<param name="wmode" value="transparent">'+
+'<param name="flashvars" value="TQwOTQ0MiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTEwLTEyJnNpZz1iNmI0NzhlYjYyMWM4MDY2ZDcxNmY2NWRkNmY0OWU1OTk5ZWY3Njk4OnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzMjc5Nzk3MTcmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTMyNzk3OTcxNy4xNDE2MTY4MzQzMg==&cameraSelected=false&simulateMobile=false&publishCapability=1&startTime=1327979722186">'+
+'</object>'+
+'</div>');
+})*/
+
+
+</script>
+</script>
 </head>
 <body>
-	<div id="wrapperUser">
+	<div id="wrapperTop">
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
-				<div id="status">You are connecting to the call</div>
-				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
-				<div id="count-header">Not yet connected</div>
-				<div id="watchers">&nbsp;</div>
+			<a href="#" id ="connectLin" onclick="startPublishing()"><div id="con"><p>connect</p></div></a> 
 			</div>
 		</div>
 		<div id="localview">
 			<div id="myCamera" class="publisherContainer"></div>
 		</div>
+		<div id="streams"></div>
+		<div id="streams">
+		</div>
+
 		<div id="main">
 			<div id="stream_1" class="right-pic"></div>
 		</div>
 		<div>
 
-		<script type="text/javascript">
-		// Set debugging level if wanted
-		// TB.setLogLevel(TB.DEBUG);
+			<script type="text/javascript">
+			// Set debugging level if wanted
+			// TB.setLogLevel(TB.DEBUG);
+			var welcome = false;
+			if (TB.checkSystemRequirements() != TB.HAS_REQUIREMENTS) {
+				alert("Unable to run TokBox OpenTok in this browser.");
+			} else {
 
-		if (TB.checkSystemRequirements() != TB.HAS_REQUIREMENTS) {
-			alert("Unable to run TokBox OpenTok in this browser.");
-		} else {
-			// Register the exception handler and
-			// create the local session object
-			TB.addEventListener("exception", exceptionHandler);
-			session = TB.initSession(sessionId);
+				// Register the exception handler and
+				// create the local session object
+				TB.addEventListener("exception", exceptionHandler);
+				session = TB.initSession(sessionId);
 
-			// Register all the listeners that route events to
-			// Javascript functions
-			session.addEventListener("sessionConnected", sessionConnectedHandler);
-			session.addEventListener("connectionCreated", connectionCreatedHandler);
-			session.addEventListener("connectionDestroyed", connectionDestroyedHandler);
-			session.addEventListener("streamCreated", streamCreatedHandler);
-			session.addEventListener("streamDestroyed", streamDestroyedHandler);
+				// Register all the listeners that route events to
+				// Javascript functions
+				session.addEventListener("sessionConnected", sessionConnectedHandler);
+				session.addEventListener("connectionCreated", connectionCreatedHandler);
+				session.addEventListener("connectionDestroyed", connectionDestroyedHandler);
+				session.addEventListener("streamCreated", streamCreatedHandler);
+				session.addEventListener("streamDestroyed", streamDestroyedHandler);
 
-			/* Connect to the session
-			If testing the app from the desktop, be sure to check the Flash Player Global Security setting
-			to allow the page from communicating with SWF content loaded from the web. For more information,
-			see http://www.tokbox.com/opentok/build/tutorials/basictutorial.html#localTest */
-			session.connect(apiKey, token);
-		}
-		</script>
+				/* Connect to the session
+				If testing the app from the desktop, be sure to check the Flash Player Global Security setting
+				to allow the page from communicating with SWF content loaded from the web. For more information,
+				see http://www.tokbox.com/opentok/build/tutorials/basictutorial.html#localTest */
+				session.connect(apiKey, token);
+			}
+			</script>
 
-	</body>
+			<script>
 
-	</html>
-	
+
+		var refreshId = setInterval(check, 7000);
+
+			function check() {
+				var y = "yes";
+				$.ajax({
+					type: "POST",
+					url: "includes/check.php",
+					data:({join: y}),
+					success: function(data) {
+						porra()
+					}
+				});
+			}
+			var go = false;
+			var list = new Array();
+			var members = new Array();
+			var arr = new Array()
+			
+			function porra(){
+				if(ismember != 1 && ismember!=members[0]){
+					members.push(ismember)
+				}
+			
+				var users = $(".users").length;
+				
+				$.getJSON('json/obj.json', function(e) {
+					$.each(e, function(l, v){
+						arr.push(v.objid);
+					})
+					$.each(e, function(i, item) {
+						
+						
+					/*	if(ismember == item.streamId ){
+							go = true;
+						}
+						
+						if(go == true){ */
+							if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
+								if(e != e.length){
+									$("#streams").append('<div class="users">'+										
+									'<object width="264" height="198" type="application/x-shockwave-flash" id="'+item.objid+'" style="outline:none;" data="http://static.opentok.com/v0.91.43.6486422/flash/f_subscribewidget.swf?partnerId=11409442">'+
+									'<param name="allowscriptaccess" value="always">'+
+									'<param name="cameraSelected" value="false">'+
+									'<param name="wmode" value="transparent">'+
+									'<param name="flashvars" value="'+item.flashvars+'">'+
+									'</object>'+
+									'</div>');	
+									list.push(item.objid,item.flashvars);
+								}
+							}
+					//	}
+					//	alert(arr);
+						$(".users > object").each(function(i){
+							
+							var getid = $(this).attr("id");
+							if($.inArray(getid, arr) === -1 || i==-1){
+								$(this).parent().remove();
+							}
+						})
+					});
+				});
+				arr = []
+			}
+
+			</script>
+		</body>
+
+		</html>
+
+
+

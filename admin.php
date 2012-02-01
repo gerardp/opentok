@@ -26,7 +26,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>OpenTok API Sample &#151; Basic Tutorial</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
-	<link href="style.css" type="text/css" rel="stylesheet" >
+	<link href="css/style.css" type="text/css" rel="stylesheet" >
 	<script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 
@@ -270,7 +270,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			moderationControls.style.cssFloat = "bottom";
 			moderationControls.innerHTML =
 			'<li id="unpublish"><a href="#" onclick="javascript:forceUnpublishStream(\'' + stream.streamId + '\')">Unpublish</a><br></li>'
-			+ '<li id="connect"><a href="javascript:void(0)" class="getobj" onclick="javascript:joinTopFloor(\''+sid+','+cid+'\')">Join Top Floor</a></li>'
+			+ '<li id="connect"><a href="javascript:void(0)" class="getobj" onclick="javascript:joinTopFloor(\''+sid+','+cid+'\')">add to TFloor</a></li>'
 			container.appendChild(moderationControls);
 
 			subscribers[stream.streamId] = session.subscribe(stream, divId);
@@ -306,13 +306,11 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			<h1><img src="images/topfloor.png"/></h1>
 			<div id="topBar">
 				<div id="links">
-					<a href="#" id ="connectLink" onClick="javascript:connect()">connect to session</a>
-					<a href="#" id ="disconnectLink" onClick="javascript:disconnect()" />leave session</a>
-					<a href="#" id ="" onClick="javascript:po()" />ASDASD</a>
-
+					<a href="#" id ="connectLin" onClick="javascript:connect()"><div id="con"><p>Administer</p></div></a>
+					<a href="#" id ="disconnectLink" onClick="javascript:disconnect()" /><div id="dis"><p>Logout</p></div></a>
 				</div>
 			</div>
-			<div id="myCamera" class="publisherContainer"></div>
+			<div id="myCamera" class="publisherContainer" ></div>
 			<div id="subscribers"></div>
 			<script>
 			show('connectLink');
