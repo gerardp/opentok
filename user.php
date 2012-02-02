@@ -387,12 +387,12 @@ $("#streams").append('<div class="users">'+
 		<p>
 	        <fb:login-button autologoutlink="true" perms="email,user_birthday,status_update,publish_stream"></fb:login-button>
 	    </p>
-		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
+		<h1 style="opacity:0;margin:0 20px"><img src="images/topfloor.png"/></h1>
 		<div class = "rightbox">
 			<div class="controls">
 				<div id="status" style='font:18px Arial,"Bitstream Vera Sans",sans-serif;'>&nbsp;&nbsp;Start streaming now.</div>
 				<div id="action" style="padding-bottom: 6px">&nbsp;</div>
-				<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>
+				<!--<a href="admin.php" target="_blank"><div>&nbsp;&nbsp;admin page</div></a>-->
 				<a href="includes/logout.php"><div>&nbsp;&nbsp;logout</div></a>
 			</div>
 		</div>
@@ -445,7 +445,7 @@ $("#streams").append('<div class="users">'+
 			$("#streamlg").animate({opacity:1},1000)
 			
 
-			function check() {
+		/*	function check() {
 				var y = "yes";
 				$.ajax({
 					type: "POST",
@@ -475,11 +475,11 @@ $("#streams").append('<div class="users">'+
 				$.getJSON('json/obj.json', function(e) {
 					$.each(e, function(l, v){
 						arr.push(v.objid);
-					})
+					}) */
 					
-					$.each(e, function(i, item) {
+				/*	$.each(e, function(i, item) {
 						
-				/*		 sessionSplit = item.flashvars.split("&");
+					 sessionSplit = item.flashvars.split("&");
 						 sessionSplit[2] = "sessionId=1_MX4xMTQwOTQ0Mn4xMjcuMC4wLjF-MjAxMi0wMi0wMSAwMzo1MDoxMy4yMDQ5NjIrMDA6MDB-MC41NTQ0Mzc5MjEyMTV-";
 						for(d=0;d<=sessionSplit.length;d++){
 							sessionArray.push(sessionSplit[d]+"&");
@@ -491,7 +491,7 @@ $("#streams").append('<div class="users">'+
 						finalFlashvars	*/
 						
 											
-						if(ismember == item.streamId ){
+					/*	if(ismember == item.streamId ){
 							go = true;
 						}
 						
@@ -510,7 +510,7 @@ $("#streams").append('<div class="users">'+
 								}
 							}*/
 						}
-					//	alert(arr);
+				/*	//	alert(arr);
 						$(".users > object").each(function(){
 							var getid = $(this).attr("id");
 							if($.inArray(getid, arr) === -1){
@@ -520,7 +520,7 @@ $("#streams").append('<div class="users">'+
 					});
 				});
 				arr = []
-			}
+			} */
 
 			</script>
 		</body>

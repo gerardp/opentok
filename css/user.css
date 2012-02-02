@@ -18,7 +18,9 @@ h1{margin:auto;float:left;}
     padding: 10px 10px 0 0;
     width: 264px;
 }
-#localview{float:right;}
+#localview{clear: both;
+float: right;
+margin: -40px 0;}
 .publisherContainer{
 	background: none repeat scroll 0 0 #000000;
     border-radius: 10px 10px 10px 10px;

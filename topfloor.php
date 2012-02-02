@@ -22,31 +22,6 @@ if(isset($_SESSION['timeout']) ) {
 }
 $_SESSION['timeout'] = time();
 ?>
-
-
-<?php
-require 'facebook.php';
-$facebook = new Facebook(array(
-  'appId'  => '100697156725418',
-  'secret' => 'e9e8f318673716c764c63f24801a6523',
-));
-$user = $facebook->getUser();
-if ($user) {
-  try {
-    $user_profile = $facebook->api('/me');
-  } catch (FacebookApiException $e) {
-    error_log($e);
-    $user = null;
-  }
-}
-if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
-} else {
-}
-?>
-
-
-
 <?php 
 require_once 'opentok/OpenTokSDK.php'; 
 $apiObj = new OpenTokSDK(API_Config::API_KEY, API_Config::API_SECRET); 
@@ -302,13 +277,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 				var sid =  event.streams[0].streamId;
 				var cid = event.streams[0].connection.connectionId;
 				ismember = sid;
-				$.ajax({
-					type: "POST",
-					url: "includes/form.php",
-					data:({streamId: sid, connectionId: cid,}),
-					success: function() {
-					}
-				});
+
 
 
 				// Update status, controls and counts
@@ -375,7 +344,6 @@ $(document).ready(function(){
 	</style>
 	<div id="wrapperTop">
 		<h1 style="opacity:0"><img src="images/topfloor.png"/></h1>
-		<p class="title">TFLOOR<span style="font-size:13px">...control the streams published by the admin. You can drag and drop if you want.</span><p>
 		
 		<div class = "rightbox">
 			<div class="controls">
@@ -421,9 +389,45 @@ $(document).ready(function(){
 			</script>
 
 			<script>
+			
+			var connected = false;
+			
+			var go = false;
+			var list = new Array();
+			var members = new Array();
+			var arr = new Array()
+			var col;
+			var colors = ["#DDDDFF","637aac","b5ff8c","ff8c8c","ffeea1","aeffa1"]
+			
+		
 
 			$("#unpublish").live("click",function(){
+				var id = $(this).attr("id");				
 				var gi = $(this).children("a").attr("id");
+				
+				
+				var p;
+				$(".ppp").each(function(){
+					p = $(this).val();
+					$(list).each(function(i){
+						if(list[i] == p){
+							list = $.grep(list, function(value) {
+							  return value != p;
+							});
+						}
+					});
+				})
+				
+			$(list).each(function(i){
+				if(list[i] == gi){
+					list = $.grep(list, function(value) {
+					  return value != gi;
+					});
+				}
+			});
+			
+
+			
 				var lala = gi.split("subscriber_");
 				var po = lala[1].split("_")
 				var pora = po[0];
@@ -442,41 +446,29 @@ $(document).ready(function(){
 				})
 			});
 
-			var refreshId = setInterval(check, 7000);
+			var refreshId = setInterval(check, 4000);
 
 			function check() {
+			//	alert(list)
 				var y = "yes";
 				$.ajax({
 					type: "POST",
 					url: "includes/check.php",
 					data:({join: y}),
 					success: function(data) {
-						porra()
+						vamo()
 					}
 				});
 			}
 			
-			var connected = false;
-			
-			var go = false;
-			var list = new Array();
-			var members = new Array();
-			var arr = new Array()
-			var col;
-			var colors = ["#DDDDFF","637aac","b5ff8c","ff8c8c","ffeea1","aeffa1"]
-			function porra(){
+			function vamo(){
 				if(ismember != 1 && ismember!=members[0]){
 					members.push(ismember)
 				}
 				col = colors[Math.floor(Math.random()*colors.length)]
 				var users = $(".users").length;
-
 				$.getJSON('json/obj.json', function(e) {
-					$.each(e, function(l, v){
-						arr.push(v.objid);
-					})
 					$.each(e, function(i, item) {
-
 						if ($.inArray(item.objid, list) === -1 && $.inArray(item.flashvars, list) === -1  ) {
 							if(e != e.length){
 								$("#streams").append('<div class="users" style="background:#'+col+'">'+										
@@ -484,21 +476,27 @@ $(document).ready(function(){
 								'<param name="allowscriptaccess" value="always">'+
 								'<param name="cameraSelected" value="false">'+
 								'<param name="wmode" value="transparent">'+
-								'<param name="flashvars" value="'+item.flashvars+'">'+
+								'<param class="ppp" name="flashvars" value="'+item.flashvars+'">'+
 								'</object>'+
 								'<ul>'+
 								'<li id="unpublish"><a id="'+item.objid+'" href="#">Unpublish</a><br></li>'+
 								'</ul>'+
 								'</div>');	
-								list.push(item.objid,item.flashvars);
 							}
 						}
-						$('.users').draggable();
-					  
+						list.push(item.objid,item.flashvars);
+						$('.users').draggable();						
 					});
 					
+					$.each(e, function(l, v){
+						arr.push(v.objid);
+					})
+					
+
 					$(".users > object").each(function(i){
+												
 						var getid = $(this).attr("id");
+						var param = $(this).children("param[name='flashvars']").val();
 						if($.inArray(getid, arr) === -1){
 							$(this).parent().remove();
 						}

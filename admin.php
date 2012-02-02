@@ -260,7 +260,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 
 			$.ajax({
 				type: "POST",
-				url: "includes/topfloor.php",
+				url: "includes/topf.php",
 				data:({streamId: sid, connectionId: cid}),
 				success: function() {
 				}
@@ -347,14 +347,14 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 		</style>
 		<div id="wrapper">
 			<h1><img src="images/topfloor.png"/></h1>
-			<p class="title">MANAGE<span style="font-size:13px">...add streams to the top floor. You can unpublish a stream if you want..</span><p>
-			<a style="margin: 30px 0 0 0;
+			<div style="padding:0 0 0 50px;float:left">
+			<a style="margin: 0px 30px 0 0;
 				float: left;
 				text-decoration: none;"href="topfloor.php" target="_blank"><div>&nbsp;&nbsp;Top Floor page</div></a>
-				<a style="margin: 30px 0 0 0;
+				<a style="margin: 0px 30px 0 0;
 					float: left;
-					text-decoration: none;"href="includes/logout.php"><div>&nbsp;&nbsp;/&nbsp;&nbsp;logout</div></a>
-			
+					text-decoration: none;"href="includes/logout.php"><div>logout</div></a>
+			</div>
 			<div style="display:none" id="topBar">
 				<div id="links">
 					<!--<a href="#" id ="connectLin" onClick="javascript:connect()"><div id="con"><p>Administer</p></div></a>
@@ -388,11 +388,7 @@ $arr = array ('token'=>$token,'sessionId'=>(string)$sessionId);
 			}
 		});	
 		
-		
-		
-		return false;
-		
-			
+		return false;	
 
 	});
 	</script>

@@ -10,7 +10,7 @@ if (isset($_SESSION['username'])) {
 <!DOCTYPE html>
 <html xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-	<title>UNFCU Facebook APP</title>
+	<title>The Top Floor Project</title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="styl.css" />
 	<link rel="stylesheet" type="text/css" href="css/login.css" />
